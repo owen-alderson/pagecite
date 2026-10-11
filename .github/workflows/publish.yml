@@ -1,0 +1,30 @@
+# Push a version tag (e.g. v2.0.0) to test, build and publish to PyPI via Trusted Publishing (no tokens).
+# The run finishes green only once pip can install the new version.
+name: Publish to PyPI
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # lets PyPI verify this workflow instead of a stored token
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e '.[dev]' build
+      - run: pytest -q
+      - run: python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Wait until pip can install it  # PyPI's CDN can serve the old index for a few minutes after upload
+        run: |
+          for i in $(seq 30); do
+            pip download --no-deps --no-cache-dir -q -d /tmp/check "pagecite==${GITHUB_REF_NAME#v}" && exit 0
+            sleep 10
+          done
+          exit 1
