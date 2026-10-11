@@ -2,5 +2,11 @@
 __pycache__/
 *.pyc
 .DS_Store
-venv/
 .venv/
+venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+*.db
+.claude/

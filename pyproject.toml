@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pagecite"
+version = "2.0.0"
+description = "Summarise research PDFs where every claim cites its page, and every quote and number is checked against the PDF text. CLI + MCP server, Obsidian notes."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Owen Alderson" }]
+keywords = ["pdf", "summarization", "citations", "research", "claude", "mcp", "obsidian"]
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Text Processing",
+]
+dependencies = [
+    "anthropic>=1.11",
+    "pymupdf>=1.24",
+    "truststore>=0.10",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=2.3"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "mcp>=2.3"]
+
+[project.scripts]
+pagecite = "pagecite.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/owen-alderson/pagecite"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["docs/*.gif", "docs/*.png"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore:builtin type .* has no __module__ attribute:DeprecationWarning"]
