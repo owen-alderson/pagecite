@@ -173,4 +173,4 @@ The original Streamlit app (pdf-research-summarizer) is kept at tag
 
 ## License
 
-MIT
+pagecite's own code is MIT. It reads PDFs with [PyMuPDF](https://github.com/pymupdf/PyMuPDF), which is licensed under the AGPL-3.0 (or a commercial licence from Artifex), so a program that ships pagecite together with PyMuPDF falls under the AGPL's terms.
