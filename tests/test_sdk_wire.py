@@ -21,7 +21,7 @@ def test_summarize_on_the_wire(document):
 
     summary = Summarizer(anthropic_client(handler)).summarize(document)
     body = seen["body"]
-    assert seen["url"].endswith("/v1/messages?beta=true")
+    assert seen["url"].split("?")[0].endswith("/v1/messages")  # anthropic 2.x dropped the "?beta=true" query
     assert "server-side-fallback-2026-07-01" in seen["headers"]["anthropic-beta"]
     assert body["model"] == "claude-opus-5-5" and body["fallbacks"] == "default"
     assert body["output_config"]["effort"] == "medium"
